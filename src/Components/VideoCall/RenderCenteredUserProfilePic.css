@@ -1,0 +1,56 @@
+.pulse {
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pulse:before {
+  content: "";
+  position: absolute;
+  width: calc(100% + 40px);
+  height: calc(100% + 40px);
+  border: 1px solid #616161;
+  border-radius: 50%;
+  animation: rippleEffect 1.5s linear infinite;
+}
+.pulse:after {
+  content: "";
+  position: absolute;
+  width: calc(100% + 40px);
+  height: calc(100% + 40px);
+  border: 1px solid #616161;
+  border-radius: 50%;
+  animation: afterRippleEffect 1.5s linear infinite;
+  animation-delay: 0.6s;
+}
+@keyframes rippleEffect {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+@keyframes afterRippleEffect {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
