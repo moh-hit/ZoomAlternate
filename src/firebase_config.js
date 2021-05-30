@@ -1,13 +1,14 @@
 import firebase from "firebase";
 
 const config = {
-    apiKey: "AIzaSyDa0Cwcs8TFKQ7vu8GdUtDUtnIPyS4wUX8",
-    authDomain: "lawmax-0.firebaseapp.com",
-    databaseURL: "https://lawmax-0.firebaseio.com",
-    projectId: "lawmax-0",
-    storageBucket: "lawmax-0.appspot.com",
-    messagingSenderId: "303039104495",
-    appId: "1:303039104495:web:20465715f7974168ae221a",
-};
+    apiKey: "AIzaSyA606zHLKCgot-1d-jNkcW4QjFtrCXiThs",
+    authDomain: "zoomalt.firebaseapp.com",
+    databaseURL: "https://zoomalt-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "zoomalt",
+    storageBucket: "zoomalt.appspot.com",
+    messagingSenderId: "1011644348359",
+    appId: "1:1011644348359:web:09bbda92b72009457e8be2"
+  };
+
 
 export default !firebase.apps.length ? firebase.initializeApp(config) : firebase.app();

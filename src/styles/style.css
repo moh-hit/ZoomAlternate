@@ -1,62 +1,84 @@
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap');
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+input,
+div,
+ ::placeholder {
+    font-family: 'Supreme', sans-serif !important;
+}
 
-body, h1, h2, h3, h4, h5, h6, p, a, input, ::placeholder {
+.MuiButton-root {
     font-weight: 600 !important;
     font-family: sans-serif !important;
 }
 
-.MuiButton-root{
-    font-weight: 600 !important;
-    font-family: sans-serif !important;
+.sep-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3vh;
 }
 
+.seperator {
+    width: 9vw;
+    border: 0.5px solid #EBEBEB;
+    margin: 0 1em;
+}
 
+.video-overlay {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    position: absolute;
+    bottom: 50px;
+    left: 35%;
+    width: 30%;
+    z-index: 1;
+}
 
-  .video-overlay{
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      position: absolute;
-      bottom: 50px;
-      left: 35%;
-      width: 30%;
-      z-index: 1;
-  }
-
-  .sPage {
+.sPage {
     text-align: center;
     padding: 40px 0;
     background: #EBF0F5;
-  }
-    h1 {
-      color: #88B04B;
-      font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-      font-weight: 900;
-      font-size: 40px;
-      margin-bottom: 10px;
-    }
-    p {
-      color: #404F5E;
-      font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
-      font-size:20px;
-      margin: 0;
-    }
-  i .checkmark {
+}
+
+h1 {
+    color: #88B04B;
+    font-weight: 900;
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+p {
+    color: #404F5E;
+    font-size: 20px;
+    margin: 0;
+}
+
+i .checkmark {
     color: #9ABC66;
     font-size: 100px;
     line-height: 200px;
-    margin-left:-15px;
-  }
-  .card {
+    margin-left: -15px;
+}
+
+.card {
     background: white;
     padding: 60px;
     border-radius: 4px;
     box-shadow: 0 2px 3px #C8D0D8;
     display: inline-block;
     margin: 0 auto;
-  }
+}
 
-  #notfound {
+#notfound {
     position: relative;
     height: 100vh;
 }
@@ -65,9 +87,9 @@ body, h1, h2, h3, h4, h5, h6, p, a, input, ::placeholder {
     position: absolute;
     left: 50%;
     top: 50%;
-    -webkit-transform: translate(-50%,-50%);
-    -ms-transform: translate(-50%,-50%);
-    transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
 .notfound {
@@ -84,10 +106,7 @@ body, h1, h2, h3, h4, h5, h6, p, a, input, ::placeholder {
     z-index: -1;
 }
 
-
-
 .notfound .notfound-404 h1 {
-    font-family: montserrat,sans-serif;
     font-size: 236px;
     font-weight: 200;
     margin: 0;
@@ -96,14 +115,12 @@ body, h1, h2, h3, h4, h5, h6, p, a, input, ::placeholder {
     position: absolute;
     left: 50%;
     top: 50%;
-    -webkit-transform: translate(-50%,-50%);
-    -ms-transform: translate(-50%,-50%);
-    transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
-
 .notfound .notfound-404 h2 {
-    font-family: montserrat,sans-serif;
     font-size: 28px;
     font-weight: 400;
     text-transform: uppercase;
@@ -119,7 +136,6 @@ body, h1, h2, h3, h4, h5, h6, p, a, input, ::placeholder {
 }
 
 .notfound a {
-    font-family: montserrat,sans-serif;
     display: inline-block;
     font-weight: 700;
     text-decoration: none;

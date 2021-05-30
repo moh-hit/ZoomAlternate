@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Image } from "react-native";
+import { View, Text, Image, Button, TouchableHighlight, TextInput } from "react-native";
 import useGlobalStyles from "../../Hooks/useGlobalStyles";
-import { Button, Col, Row } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
 import firebase from "firebase";
 import { useSelector } from "react-redux";
 import { SET_KEYS_TRUE, UPDATE_USER_DATA } from "../../Store/actions";
 import useActionDispatcher from "../../Hooks/useActionDispatcher";
+import loginBanner from '../../assets/imgs/loginBanner.svg'
+import googleLogo from '../../assets/imgs/google.svg'
+
 
 const Username = ({
   fullHeight,
@@ -14,9 +15,19 @@ const Username = ({
   //setActivePage,
 }) => {
   const styles = useGlobalStyles();
-  const width = fullWidth * 0.3;
-  const height = fullWidth * 0.15;
-  console.log(firebase.auth().currentUser);
+  const INPUT_MAP = {
+    EMAIL: {
+      HEADING: "Your Email",
+      KEY: "email",
+      SECURE: false
+    },
+    PASSWORD: {
+      HEADING: "Password",
+      KEY: "password",
+      SECURE: true
+    }
+  }
+
   const handleGoBack = () => {
     // 1st arg - key to set true
     // 2nd arg - key to set false
@@ -118,62 +129,70 @@ const Username = ({
   return (
     <View
       classname="login-page"
-      style={{
-        width: width,
-        marginLeft: fullWidth * 0.35,
-        borderTopWidth: fullHeight * 0.25,
-        borderColor: "#ffffff",
-        overflow: "hidden",
-      }}
+      style={styles.containerLogin}
     >
-      <View>
-        <Image
-          onClick={() => {
-            window.location.href = "/";
-          }}
-          style={styles.image}
-          source={{ uri: "logo.png", width, height }}
-        />
-      </View>
-      {fullWidth > 500 ? (
-        <Button
-          style={{
-            marginLeft: "15%",
-            width: "70%",
-            marginTop: "15%",
-            border: "3px solid #172A55",
-            color: "#172A55",
-            borderRadius: 6,
-            height: fullHeight * 0.06,
-            fontSize: 16,
-            fontWeight: 600,
-            textAlign: "center",
-          }}
-          size="large"
-          onClick={googleLogin}
-        >
-          Sign in with Google
-        </Button>
-      ) : (
-        <Button
-          style={{
-            marginLeft: "15%",
-            width: "70%",
-            marginTop: "15%",
-            backgroundColor: "#172A55",
-            color: "white",
-            height: fullHeight * 0.04,
-            fontSize: 6,
-            textAlign: "center",
-          }}
-          size={"small"}
-          onClick={googleLogin}
-        >
-          Sign in with Google
-        </Button>
-      )}
-    </View>
+      <div class="row" style={{ width: "100%" }}>
+        <div class="col-sm-6"><View style={styles.loginLeft}>
+          <Text style={styles.logo}>InConnect</Text>
+          <Image alt="login banner" source={loginBanner} style={styles.loginBanner} />
+          <View style={{ marginTop: 30 }}>
+            <Text style={styles.bannerT1}>Privacy by design.</Text>
+            <Text style={styles.bannerT2}>Lorem ipsum dolor sit amet consectetur adipiscing elit vitae dictumst, nascetur ornare.</Text>
+          </View>
+
+        </View></div>
+        <div class="col-sm-6"><View style={styles.loginRight}>
+          <Image source={{ uri: "https://www.backbase.com/wp-content/uploads/2020/05/Microsoft-Logo-PNG-Transparent.png" }} style={styles.companyLogo} />
+          <Text style={{ fontSize: 20, fontWeight: 600, paddingVertical: "6vh" }}>Login to your account</Text>
+          <View style={{ width: "100%", alignItems: "center", justifyContent: "center" }}>
+            <TouchableHighlight onPress={googleLogin} style={styles.googleButton}>
+              <View style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}>
+                <Image source={googleLogo} style={styles.googleLogo} />
+                <Text style={{ fontSize: 16, paddingHorizontal: 60 }}>Login with Google</Text>
+              </View>
+            </TouchableHighlight>
+            <div className="sep-container">
+              <div className="seperator"></div>
+              <Text style={{ fontWeight: "500", color: "rgba(0,0,0,0.5)" }}>OR</Text>
+              <div className="seperator"></div>
+            </div>
+            {Object.values(INPUT_MAP).map((inp, index) => (
+              <View style={{ marginVertical: 10 }}>
+                <Text style={{ marginVertical: "1vh", fontWeight: 500 }}>{inp.HEADING}</Text>
+                <TextInput
+                  value={inp.key}
+                  style={styles.input}
+                />
+              </View>
+            ))}
+            <View style={{
+              width: "20vw",
+              flexDirection: "row",
+              justifyContent: "space-between", alignItems: "center",
+              marginTop: 10,
+              marginBottom: "10vh"
+            }}>
+              <Text style={styles.resetPassword}>Reset Password</Text>
+              <TouchableHighlight style={styles.loginButton}>
+                <View style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}>
+                  <Text style={styles.loginText}>Login</Text>
+                </View>
+              </TouchableHighlight>
+            </View>
+            <Text>Don’t have an account? <strong style={{ textDecorationLine: 'underline' }}>Create new account</strong></Text>
+          </View>
+        </View></div>
+      </div>
+
+    </View >
   );
 };
 
-export default Username;
+
+export default Username
