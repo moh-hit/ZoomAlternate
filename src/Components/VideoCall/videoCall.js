@@ -2,29 +2,30 @@ import { MessageOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Drawer, message, Select, Spin, Steps, Upload } from "antd";
 import "antd/dist/antd.css";
 import React, { Component } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text, TextInput, TouchableHighlight, View } from "react-native";
 import { LEFT, RIGHT, Swipeable } from "react-swipeable";
-import { GiftedChat } from "react-gifted-chat";
 import { ChatFeed, Message } from "react-chat-ui";
 import RecordRTC from "recordrtc";
 import RenderCenteredUserProfilePic from "./RenderCenteredUserProfilePic";
-import AppointmentModalButton from "../RenderClientHome/AppointmentModalButton";
 import firebase from "firebase";
 import {
+  AlbumOutlined,
   CallEndRounded,
+  Close,
+  FileCopy,
+  Forum,
   MicOffRounded,
   MicRounded,
+  NearMe,
   ScreenShareRounded,
   Send,
   StopScreenShareRounded,
   VideocamOffRounded,
   VideocamRounded,
 } from "@material-ui/icons";
-import { IconButton, Button as MButton } from "@material-ui/core";
+import { IconButton, Popover } from "@material-ui/core";
 import Timer from "react-compound-timer";
-
-const { Option } = Select;
-const { Step } = Steps;
+import MenuIcon from '@material-ui/icons/Menu';
 
 var pc = null;
 
@@ -89,9 +90,11 @@ class VideoCall extends Component {
       fileRecName: "",
       allMessages: {},
       lawyerTier: "",
+      anchorEl: null
       // File sharing - name
     };
-
+    this.open = Boolean(this.state.anchorEl);
+    this.id = !this.open ? 'simple-popover' : undefined;
     this.baseState = this.state;
   }
 
@@ -102,8 +105,20 @@ class VideoCall extends Component {
   };
 
   changeTextMessage = (e) => {
-    this.setState({ text: e.target.value });
+    this.setState({ text: e });
   };
+
+
+  handleClick = (event) => {
+    console.log(event);
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
+
 
   componentDidMount() {
     const self = this;
@@ -456,11 +471,11 @@ class VideoCall extends Component {
     console.log(fileList);
     console.log(
       "File name: " +
-        file.name +
-        "  File type: " +
-        file.type +
-        " File size: " +
-        file.size
+      file.name +
+      "  File type: " +
+      file.type +
+      " File size: " +
+      file.size
     );
 
     const reader = new FileReader();
@@ -655,10 +670,10 @@ class VideoCall extends Component {
                 snap.val().tier === "EXEC"
                   ? 9
                   : snap.val().tier === "XL"
-                  ? 6
-                  : snap.val().tier === "X"
-                  ? 3
-                  : 0,
+                    ? 6
+                    : snap.val().tier === "X"
+                      ? 3
+                      : 0,
             });
           });
         firebase
@@ -680,10 +695,10 @@ class VideoCall extends Component {
                 snap.val().tier === "EXEC"
                   ? 9
                   : snap.val().tier === "XL"
-                  ? 6
-                  : snap.val().tier === "X"
-                  ? 3
-                  : 0,
+                    ? 6
+                    : snap.val().tier === "X"
+                      ? 3
+                      : 0,
             });
           });
         firebase
@@ -782,8 +797,8 @@ class VideoCall extends Component {
                         .database()
                         .ref(
                           "/Accounts/" +
-                            self.state.callUserValue +
-                            "/ice/lawyerIce"
+                          self.state.callUserValue +
+                          "/ice/lawyerIce"
                         );
                       docRef2.on("child_added", (snapshot) => {
                         if (JSON.parse(snapshot.val())) {
@@ -796,8 +811,8 @@ class VideoCall extends Component {
                                   .database()
                                   .ref(
                                     "/Accounts/" +
-                                      self.state.callUserValue +
-                                      "/webRTC"
+                                    self.state.callUserValue +
+                                    "/webRTC"
                                   )
                                   .update({ [Date.now()]: "step: 18" });
                                 console.log(
@@ -1045,9 +1060,9 @@ class VideoCall extends Component {
               .ref()
               .child(
                 self.state.callUserValue +
-                  "/" +
-                  self.state.startTime +
-                  "/client"
+                "/" +
+                self.state.startTime +
+                "/client"
               )
               .put(blob)
               .then(function (snapshot) {
@@ -1458,7 +1473,7 @@ class VideoCall extends Component {
     data.message = this.state.text;
     data.id = 1;
     if (this.state.text.length > 0) {
-      await this.state.dataChannel.send(JSON.stringify(data));
+      // await this.state.dataChannel.send(JSON.stringify(data));
       if (this.state.creator) {
         await this.setState((prevState) => ({
           allMessages: {
@@ -1486,6 +1501,8 @@ class VideoCall extends Component {
     const height = window.innerHeight;
     const videoMargin = (window.innerHeight - (window.innerWidth * 3) / 4) / 16;
     let width = window.innerWidth;
+    const open = Boolean(this.state.anchorEl);
+    const id = open ? 'simple-popover' : undefined;
 
     return (
       <div
@@ -1494,65 +1511,15 @@ class VideoCall extends Component {
           zIndex: "inherit",
         }}
       >
-        <div
-          style={{
-            position: "fixed",
-            top: 20,
-            right: 20,
-            backgroundColor: "#fff3",
-            padding: 5,
-            borderRadius: 5,
-            zIndex: 2,
-          }}
-        >
-          <Timer
-            startImmediately={false}
-            ref={(node) => {
-              this.timerRef = node;
-            }}
-            onPause={this.stopTimer}
-          >
-            <>
-              <Timer.Minutes />:<Timer.Seconds /> mins
-            </>
-          </Timer>
-        </div>
-        <div
-          style={{ position: "absolute", top: 20, left: 20, zIndex: 2 }}
-          className="steps-overlay"
-        >
-          <Button
-            onClick={this.showDrawer}
-            icon={<MessageOutlined />}
-            shape="circle"
-          />
-
-          {this.state.creator ? (
-            <AppointmentModalButton
-              username={this.state.username}
-              callerId={this.state.callerId}
-            />
-          ) : null}
-        </div>
-
-        <Spin
-          style={{
-            position: "absolute",
-            marginTop: height / 2,
-            marginLeft: "50%",
-          }}
-          spinning={this.state.spin}
-        />
-
         <div>
           <div className="inner-container" style={{ height: height }}>
             <div className="video-on-video-overlay">
               <video
                 style={{
                   height: height / 4,
-                  position: "absolute",
-                  bottom: 10,
-                  right: 10,
+                  position: "fixed",
+                  top: "3vh",
+                  right: "2vw",
                   zIndex: 1,
 
                   transform: this.state.screenShare ? null : "scaleX(-1)",
@@ -1564,226 +1531,107 @@ class VideoCall extends Component {
                 playsInline
               ></video>
             </div>
-            <div className="textCall-overlay" danger="true"></div>
-            <div className="video-overlay">
-              <IconButton
-                disabled={this.state.screenShare ? true : false}
-                aria-label="Mute Video"
-                onClick={this.stopVideo}
-                style={{
-                  backgroundColor: this.state.screenShare
-                    ? "#79a3b1"
-                    : !this.state.videoOn
-                    ? "#ff5e78"
-                    : null,
+            <div className="video-overlay-header">
+              <Text style={styles.videoTitle}>Weely round-up</Text>
+              <Timer
+                startImmediately={false}
+                ref={(node) => {
+                  this.timerRef = node;
                 }}
+                onPause={this.stopTimer}
               >
-                {this.state.videoOn ? (
-                  <VideocamRounded style={{ fontSize: 35, color: "#fff" }} />
-                ) : (
-                  <VideocamOffRounded style={{ fontSize: 35, color: "#fff" }} />
-                )}
-              </IconButton>
-
-              <IconButton
-                onClick={this.endCall}
-                style={{ backgroundColor: "#ff5e78" }}
-              >
-                <CallEndRounded style={{ fontSize: 35, color: "#fff" }} />
-              </IconButton>
-
-              <IconButton
-                aria-label="Mute Audio"
-                onClick={this.stopAudio}
-                style={{
-                  backgroundColor: !this.state.audioOn ? "#ff5e78" : null,
-                }}
-              >
-                {this.state.audioOn ? (
-                  <MicRounded style={{ fontSize: 35, color: "#fff" }} />
-                ) : (
-                  <MicOffRounded style={{ fontSize: 35, color: "#fff" }} />
-                )}
-              </IconButton>
-
-              <IconButton
-                aria-label="Mute Screen"
-                onClick={this.shareScreen}
-                style={{
-                  backgroundColor: !this.state.screenShare ? "#ff5e78" : null,
-                }}
-              >
-                {this.state.screenShare ? (
-                  <ScreenShareRounded style={{ fontSize: 35, color: "#fff" }} />
-                ) : (
-                  <StopScreenShareRounded
-                    style={{ fontSize: 35, color: "#fff" }}
-                  />
-                )}
-              </IconButton>
-
-              <Drawer
-                title={`Live Chat ${
-                  this.state.creator
-                    ? this.state.displayName
-                    : this.state.displayName
-                }`}
-                placement="left"
-                closable={true}
-                width={width * 0.33}
-                onClose={this.onDrawerClose}
-                visible={this.state.drawerVisible}
-                footer={
-                  <div
-                    style={{
-                      textAlign: "centre",
-                      display: "flex",
-                      justifyContent: "space-evenly",
-                    }}
-                  >
-                    {/* <input
-                      id="inputFile"
-                      className="inputFile"
-                      type="file"
-                      onChange={(e) => {
-                        this.fileSelect(e);
-                        console.log(e);
-                      }}
-                      size="60"
-                      style={{
-                        display: "block",
-                        float: "left",
-                        padding: "22px 15px 0 15px",
-                      }}
-                    ></input> */}
-                    <input
-                      style={{ display: "none" }}
-                      id="contained-button-file"
-                      className="inputFile"
-                      type="file"
-                      onChange={(e) => {
-                        this.fileSelect(e);
-                      }}
-                    />
-                    <label htmlFor="contained-button-file">
-                      <MButton
-                        variant="contained"
-                        color="primary"
-                        component="span"
-                      >
-                        Upload File
-                      </MButton>
-                    </label>
-                    {/* <Button
-                      className="Save-button"
-                      size="small"
-                      onClick={this.saveToDisk}
-                      variant="contained"
-                      color="default"
-                      style={{
-                        marginLeft: "15px",
-                        padding: "5px",
-                        borderRadius: "10px",
-                      }}
-                    >
-                      Save
-                    </Button> */}
-                    <h5
-                      style={{ display: this.state.fileRec ? "flex" : "none" }}
-                    >
-                      {this.state.fileRecName}
-                    </h5>
-                    <div
-                      style={{
-                        display: this.state.fileRec ? "flex" : "none",
-                        justifyContent: "space-around",
-                        width: width * 0.15,
-                        alignItems: "center",
-                      }}
-                    >
-                      <MButton
-                        onClick={this.saveToDisk}
-                        variant="contained"
-                        color="secondary"
-                        component="span"
-                      >
-                        Save File
-                      </MButton>
-                      {/* <Button
-                      aria-label="delete"
-                      onClick={this.deleteReceivedfile}
-                    >
-                      Delete
-                    </Button> */}
-                      <MButton
-                        onClick={this.deleteReceivedfile}
-                        variant="outlined"
-                        color="primary"
-                        component="span"
-                      >
-                        Delete File
-                      </MButton>
-                    </div>
-                  </div>
-                }
-              >
-                {/* <GiftedChat
-                  messages={this.state.messages}
-                  onSend={(messages) => this.onSend(messages)}
-                  user={{
-                    id: this.state.username,
-                  }}
-                /> */}
-
-                <ChatFeed
-                  messages={this.state.messages} // Array: list of message objects
-                  bubblesCentered={false} //Boolean should the bubbles be centered in the feed?
-                  bubbleStyles={{
-                    text: {
-                      fontSize: 10,
-                    },
-                    chatbubble: {
-                      borderRadius: 70,
-                      padding: 8,
-                    },
-                  }}
-                />
-                <div
+                <div style={{ backgroundColor: "#fff", padding: 5, margin: "2vh 0" }}>
+                  <AlbumOutlined style={{ color: "#D3575F" }} /> <strong style={{ fontSize: 12 }}>REC</strong>
+                  <Timer.Minutes />:<Timer.Seconds /> </div>
+              </Timer>
+            </div>
+            <div className="video-overlay-footer">
+              <div>
+                <Text style={{ color: "#fff" }}>www.inconnect.me/</Text>
+                <View style={{ flexDirection: "row", marginTop: 5 }}><Text style={{ color: "#fff", fontWeight: "700", fontSize: 18 }}>myd-883-09</Text> <FileCopy style={{ color: "#fff", fontSize: 20, margin: "0 10" }} /></View>
+              </div>
+              <div>
+                <IconButton
+                  disabled={this.state.screenShare ? true : false}
+                  aria-label="Mute Video"
+                  onClick={this.stopVideo}
                   style={{
-                    position: "absolute",
-                    bottom: 70,
-                    left: 0,
-                    display: "flex",
-                    flexDirection: "row",
+                    backgroundColor: this.state.screenShare
+                      ? "#79a3b1"
+                      : !this.state.videoOn
+                        ? "#ff5e78"
+                        : null,
                   }}
                 >
-                  <input
-                    value={this.state.text}
-                    placeholder="Enter text here"
-                    style={{ width: width * 0.3, border: "none", padding: 5 }}
-                    onChange={(e) => {
-                      this.changeTextMessage(e);
-                    }}
-                    onKeyPress={(event) => {
-                      if (event.key === "Enter") {
-                        this.onSend();
-                      }
-                    }}
-                  />
-                  <IconButton
-                    onClick={this.onSend}
-                    style={{ backgroundColor: "#fff" }}
-                  >
-                    <Send style={{ fontSize: 20, color: "#11698e" }} />
-                  </IconButton>
-                </div>
-              </Drawer>
-            </div>
+                  {this.state.videoOn ? (
+                    <VideocamRounded style={{ fontSize: 28, color: "#fff" }} />
+                  ) : (
+                    <VideocamOffRounded style={{ fontSize: 28, color: "#fff" }} />
+                  )}
+                </IconButton>
 
+                <IconButton
+                  aria-label="Mute Audio"
+                  onClick={this.stopAudio}
+                  style={{
+                    backgroundColor: !this.state.audioOn ? "#ff5e78" : null,
+                  }}
+                >
+                  {this.state.audioOn ? (
+                    <MicRounded style={{ fontSize: 28, color: "#fff" }} />
+                  ) : (
+                    <MicOffRounded style={{ fontSize: 28, color: "#fff" }} />
+                  )}
+                </IconButton>
+                <IconButton
+                  aria-label="Mute Screen"
+                  onClick={this.shareScreen}
+                  style={{
+                    backgroundColor: !this.state.screenShare ? "#ff5e78" : null,
+                  }}
+                >
+                  {this.state.screenShare ? (
+                    <ScreenShareRounded style={{ fontSize: 28, color: "#fff" }} />
+                  ) : (
+                    <StopScreenShareRounded
+                      style={{ fontSize: 28, color: "#fff" }}
+                    />
+                  )}
+                </IconButton>
+                <IconButton
+                  aria-describedby={id}
+                  onClick={this.handleClick}
+                  style={{
+                    backgroundColor: this.state.chatOpen ? "#D17EE5" : null,
+                  }}
+                >
+                  <Forum style={{ fontSize: 28, color: "#fff" }} />
+                </IconButton>
+              </div>
+              <div>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <MenuIcon className="two" style={{ fontSize: 28, color: "#fff", margin: "0 2vw" }} >
+                    <div style={{ position: "absolute", height: "30vh", width: "30vw", backgroundColor: "#000" }}></div>
+
+                  </MenuIcon>
+
+                  <TouchableHighlight onClick={this.endCall}
+                    style={{ backgroundColor: "#D3575F", paddingHorizontal: "2vw", paddingVertical: "1vh" }}>
+                    <View style={{
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}>
+                      <Text style={{ fontWeight: "700", color: "#fff", fontSize: 16 }}>Leave</Text>
+                    </View>
+                  </TouchableHighlight>
+                </View>
+              </div>
+
+            </div>
             <video
               className="video-friend"
               style={{
-                position: "absolute",
+                position: "fixed",
                 top: 0,
                 left: 0,
                 width: "100vw",
@@ -1797,12 +1645,94 @@ class VideoCall extends Component {
               playsInline
             ></video>
           </div>
+          {!this.state.otherVideo ? (
+            <RenderCenteredUserProfilePic
+              src={this.state.callerProfilePic || this.state.profilePic}
+            />
+          ) : null}
+
         </div>
-        {!this.state.otherVideo ? (
-          <RenderCenteredUserProfilePic
-            src={this.state.callerProfilePic || this.state.profilePic}
-          />
-        ) : null}
+        <Popover
+          id={id}
+          open={open}
+          anchorEl={this.state.anchorEl}
+          anchorReference="anchorPosition"
+          onClose={this.handleClose}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+          anchorPosition={{ top: 80, left: width - 280 }}
+        >
+          <View style={styles.chatBox}>
+
+            <View style={styles.chatBoxHeader}>
+              <View style={{ flexDirection: "row" }}>
+                <Forum style={{ color: "rgba(0,0,0,0.6)", fontSize: 20 }} />
+                <Text style={{ color: "rgba(0,0,0,0.6)", fontSize: 16, fontWeight: "700" }}>Chatbox</Text>
+              </View>
+              <IconButton aria-describedby={id} onClick={this.handleClose}>
+                <Close style={{ color: "rgba(0,0,0,0.6)", fontSize: 20 }} />
+              </IconButton>
+            </View>
+
+            <div class="flex-grow-1 p-3">
+              <ChatFeed
+                messages={this.state.messages} // Array: list of message objects
+                bubblesCentered={false} //Boolean should the bubbles be centered in the feed?
+                bubbleStyles={{
+                  text: {
+                    fontSize: 12,
+                    color: "#000"
+                  },
+                  chatbubble: {
+                    borderRadius: 8,
+                    padding: 8,
+                    backgroundColor: "#F5F5F5"
+                  },
+
+                }}
+
+              />
+
+            </div>
+            <div
+              style={{
+                position: "absolute",
+                bottom: 5,
+                left: 10,
+                display: "flex",
+                flexDirection: "row",
+                width: "100%"
+              }}
+            >
+              <TextInput
+                value={this.state.text}
+                placeholder="Type your message here..."
+                style={{ width: "20vw", border: "none", padding: 5 }}
+                onChangeText={(e) => {
+                  console.log(e);
+                  this.changeTextMessage(e);
+                }}
+                onKeyPress={(event) => {
+                  if (event.key === "Enter") {
+                    this.onSend();
+                  }
+                }}
+              />
+              <IconButton
+                onClick={this.onSend}
+                style={{ backgroundColor: "#D17EE5", borderRadius: "100%", padding: 5 }}
+              >
+                <NearMe style={{ fontSize: 24, color: "#fff" }} />
+              </IconButton>
+            </div>
+          </View>
+        </Popover>
       </div>
     );
   }
@@ -1845,4 +1775,23 @@ const styles = StyleSheet.create({
   code: {
     fontFamily: "monospace, monospace",
   },
+  chatBox: {
+    display: "flex",
+    height: "75vh",
+    width: "25vw"
+  },
+  chatBoxHeader: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "rgba(0,0,0,0.1)"
+  },
+  videoTitle: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: "#fff"
+  }
 });

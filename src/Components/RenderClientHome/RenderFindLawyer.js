@@ -7,6 +7,9 @@ import { lawyerSpecialties } from "../utils/LawyerSpecialtiesList";
 import useActionDispatcher from "../../Hooks/useActionDispatcher";
 import { useSelector } from "react-redux";
 import { SET_KEYS_TRUE, UPDATE_USER_DATA } from "../../Store/actions";
+import { Image, Text, TouchableHighlight, View } from "react-native";
+import useGlobalStyles from "../../Hooks/useGlobalStyles";
+import { AddBox, Notifications } from "@material-ui/icons";
 
 //google maps
 
@@ -29,120 +32,51 @@ function error(err) {
   console.warn(`ERROR(${err.code}): ${err.message}`);
 }
 
-const GoogleMapExample = withGoogleMap((props) => (
-  <GoogleMap
-    defaultCenter={{ lat: 12.9619, lng: 77.597 }}
-    defaultZoom={13}
-    options={{
-      mapTypeControl: false,
-      streetViewControl: false,
-      fullscreenControl: false,
-    }}
-  >
-    <Marker
-      icon={iconMarker}
-      position={{ lat: parseFloat(lat), lng: parseFloat(long) }}
-    />
-    <Marker
-      icon={iconMarker}
-      position={{ lat: parseFloat(lat + 0.01), lng: parseFloat(long + 0.031) }}
-    />
-    <Marker
-      icon={iconMarker}
-      position={{ lat: parseFloat(lat + 0.039), lng: parseFloat(long + 0.03) }}
-    />
-    <Marker
-      icon={iconMarker}
-      position={{ lat: parseFloat(lat + 0.025), lng: parseFloat(long + 0.13) }}
-    />
-    <Marker
-      icon={iconMarker}
-      position={{ lat: parseFloat(lat + 0.076), lng: parseFloat(long + 0.038) }}
-    />
-    <Marker
-      icon={iconMarker}
-      position={{ lat: parseFloat(lat + 0.053), lng: parseFloat(long - 0.066) }}
-    />
-    <Marker
-      icon={iconMarker}
-      position={{ lat: parseFloat(lat + 0.045), lng: parseFloat(long - 0.078) }}
-    />
-    <Marker
-      icon={iconMarker}
-      position={{ lat: parseFloat(lat + 0.08), lng: parseFloat(long + 0.09) }}
-    />
-    <Marker
-      icon={iconMarker}
-      position={{ lat: parseFloat(lat + 0.06), lng: parseFloat(long + 0.09) }}
-    />
-    <Marker
-      icon={iconMarker}
-      position={{ lat: parseFloat(lat - 0.03), lng: parseFloat(long - 0.08) }}
-    />
-    <Marker
-      icon={iconMarker}
-      position={{ lat: parseFloat(lat + 0.067), lng: parseFloat(long + 0.09) }}
-    />
-    <Marker
-      icon={iconMarker}
-      position={{ lat: parseFloat(lat - 0.083), lng: parseFloat(long - 0.098) }}
-    />
-    <Marker
-      icon={iconMarker}
-      position={{ lat: parseFloat(lat + 0.019), lng: parseFloat(long + 0.059) }}
-    />
-    <Marker
-      icon={iconMarker}
-      position={{ lat: parseFloat(lat - 0.081), lng: parseFloat(long - 0.029) }}
-    />
-  </GoogleMap>
-));
 
-const steps = [
-  {
-    title: "Select Lawyer Specialties",
-  },
-  {
-    title: "Select Lawyer Tier",
-  },
-];
-const RenderSpecialitySelection = ({ handleSpecialityChange }) => {
-  return (
-    <Select
-      showSearch
-      style={{ width: "80%", marginLeft: "5%", height: 40, fontSize: 16 }}
-      placeholder="Please select specialities"
-      onChange={handleSpecialityChange}
-    >
-      {lawyerSpecialties.map(function (item, key) {
-        return <Option key={item}>{item}</Option>;
-      })}
-    </Select>
-  );
-};
-const RenderTierSelection = ({ handleTierChange }) => {
-  return (
-    <Select
-      showSearch
-      style={{ width: "80%", marginLeft: "5%", height: 40, fontSize: 16 }}
-      placeholder="Years of qualification"
-      optionFilterProp="children"
-      onChange={handleTierChange}
-      filterOption={(input, option) =>
-        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-      }
-    >
-      <Option value="X">LawMax X (1-7 years)</Option>
-      <Option value="XL">Lawmax XL (8-16)</Option>
-      <Option value="EXEC">Lawmax EXEC (>16)</Option>
-    </Select>
-  );
-};
 
-const RenderFindLawyer = ({}) => {
+
+const SIDEBAR_MENUS = {
+  NEW_MEETING: {
+    name: "New meeting",
+    primary: true,
+    key: "new_meeting"
+  },
+  SCHLD_MEETING: {
+    name: "Scheduled meetings",
+    primary: false,
+    key: "schld_meeting",
+    active: true
+  },
+  ACTIVE_USERS: {
+    name: "Active users",
+    primary: false,
+    key: "active_users"
+  },
+  CALL_RCRDINGS: {
+    name: "Call Recordings",
+    primary: false,
+    key: "call_recordings"
+  },
+  CALL_LOGS: {
+    name: "Call Logs",
+    primary: false,
+    key: "call_logs"
+  }
+
+}
+const SCHLDCARD_DETAILS = [
+  { title: "Weekly round-up Weekly round-up", timing: "02:30pm - 03:30pm", guest: "Mandeep Sharma" },
+  { title: "MJ Clients", timing: "02:30pm - 03:30pm", guest: "Mandeep Sharma" },
+  { title: "Visco Follow up", timing: "02:30pm - 03:30pm", guest: "Mandeep Sharma" },
+  { title: "Team Sync", timing: "02:30pm - 03:30pm", guest: "Mandeep Sharma" },
+  { title: "Design Rollout", timing: "02:30pm - 03:30pm", guest: "Mandeep Sharma" },
+]
+
+const RenderFindLawyer = ({ }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visible, setVisible] = useState(false);
   const dispatchAction = useActionDispatcher();
+  const styles = useGlobalStyles();
 
   useEffect(() => {
     console.log("use effect, find lawyer ");
@@ -157,6 +91,7 @@ const RenderFindLawyer = ({}) => {
       options
     );
   }, []);
+
   const handlePrev = () => {
     setCurrentIndex((c) => {
       if (c === 0) {
@@ -166,6 +101,7 @@ const RenderFindLawyer = ({}) => {
       }
     });
   };
+
   const handleNext = () => {
     setCurrentIndex((c) => {
       if (c === 1) {
@@ -175,9 +111,12 @@ const RenderFindLawyer = ({}) => {
       }
     });
   };
+
+
   const showModal = () => {
     setVisible(true);
   };
+
   const handleOk = () => {
     setVisible(false);
     //navigateto userpage
@@ -189,124 +128,72 @@ const RenderFindLawyer = ({}) => {
   const handleCancel = () => {
     setVisible(false);
   };
-  const handleSpecialityChange = () => {
-    //store specialities
-    handleNext();
-  };
-  const handleTierChange = () => {
-    console.log("save tier and specialities");
-  };
+
+
   return (
-    <div>
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          zIndex: 99,
-        }}
-      >
-        <Button
-          type="primary"
-          style={{
-            position: "fixed",
-            left: "6%",
-            width: "25%",
-            top: "1%",
-            backgroundColor: "#172A55",
-            color: "white",
-            fontSize: 16,
-            height: 35,
-            paddingLeft: "2%",
-          }}
-          onClick={showModal}
-        >
-          Find Lawyer
-        </Button>
-      </div>
-      <Modal
-        visible={visible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        title="Call Lawyer"
-        footer={[
-          <Button key="Cancel" onClick={handleCancel}>
-            Cancel
-          </Button>,
-          <Button key="Find Lawyer" type="primary" onClick={handleOk}>
-            Find Lawyer
-          </Button>,
-        ]}
-      >
-        <Steps current={currentIndex}>
-          {steps.map((item) => (
-            <Steps.Step key={item.title} title={item.title} />
-          ))}
-        </Steps>
-        <Row gutter={16}>
-          {currentIndex === 0 ? (
-            <Col
-              span={24}
-              style={{
-                paddingTop: 20,
-                paddingLeft: 8,
-              }}
-            >
-              <RenderSpecialitySelection
-                handleSpecialityChange={handleSpecialityChange}
-              />
-            </Col>
-          ) : null}
-          {currentIndex === 1 ? (
-            <Col
-              span={24}
-              style={{
-                paddingTop: 20,
-                paddingLeft: 8,
-              }}
-            >
-              <RenderTierSelection handleTierChange={handleTierChange} />
-            </Col>
-          ) : null}
-        </Row>
-        <Row gutter={16}>
-          {currentIndex === 1 ? (
-            <Col
-              span={24}
-              style={{
-                paddingTop: 8,
-                paddingLeft: 20,
-              }}
-            >
-              <Button
-                style={{
-                  marginLeft: 12,
-                }}
-                type="primary"
-                onClick={handlePrev}
-              >
-                Previous
-              </Button>
-            </Col>
-          ) : null}
-        </Row>
-      </Modal>
-      <GoogleMapExample
-        containerElement={
-          <div
-            style={{
-              overflow: "hidden",
-              position: "absolute",
-              top: 0,
-              left: 0,
-              height: window.innerHeight,
-              width: window.innerWidth,
-            }}
-          />
-        }
-        mapElement={<div style={{ height: `100%` }} />}
-      />
-    </div>
+    <View style={{ flex: 1 }}>
+      <View style={styles.navbar}>
+        <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+          <Image source={{ uri: "https://www.backbase.com/wp-content/uploads/2020/05/Microsoft-Logo-PNG-Transparent.png" }} style={styles.companyLogoNav} />
+          <div className="vertical-seperator"></div>
+          <Text style={styles.logoNav}>InConnect</Text>
+        </View>
+        <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+          <Notifications style={{ color: "rgba(0,0,0,0.5)", fontSize: 28 }} />
+          <Image source={{ uri: "https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/batman_hero_avatar_comics-512.png" }} style={styles.userProfileNav} />
+        </View>
+      </View>
+      <Row>
+        <Col xs={2}>
+          <View style={styles.sidebarContainer}>
+            <View style={{ alignItems: "flex-start" }}>
+              {Object.values(SIDEBAR_MENUS).map((menu, index) => (
+                <TouchableHighlight style={[menu.primary ? styles.sidebarPrimaryBut : styles.sidebarSecBut, { backgroundColor: menu.active ? "#F5F5F5" : menu.primary ? "#6626EF" : "#fff" }]}>
+                  <View style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center"
+                  }}>
+                    {menu.primary && <AddBox style={{ color: "#fff", fontSize: 20 }} />}
+                    <Text style={menu.primary ? styles.sidebarPrimaryButText : styles.sidebarSecButText}>{menu.name}</Text>
+                  </View>
+                </TouchableHighlight>
+              ))}
+            </View>
+            <View style={{ marginBottom: "3vh" }}>
+              <View style={styles.adBanner}>
+                <View style={{ alignItems: "flex-start" }}>
+                  <Text style={styles.adBannerT1}>50% off on 10 users</Text>
+                  <Text style={styles.adBannerT2}>Lorem ipsum dolor sit amet lorem.</Text>
+                </View>
+                <Text style={styles.adBannerBtn}>Know More</Text>
+              </View>
+            </View>
+          </View>
+        </Col>
+        <Col xs={10}>
+          <Row xs={1} md={4}>
+            {SCHLDCARD_DETAILS.map((detail, index) => (
+              <Col style={{ paddingLeft: 0, paddingRight: 0 }}>
+                <View style={styles.schldCard}>
+                  <View>
+                    <Text style={styles.schldCardT1}>{detail.title}</Text>
+                    <Text style={styles.schldCardT2}>{detail.timing}</Text>
+                    <Text style={styles.schldCardT3}>Invited Guest</Text>
+                    <Text style={styles.schldCardT4}>{detail.guest}</Text>
+                  </View>
+                  <View style={styles.schldCardActionContainer}>
+                    <Text style={{ fontWeight: "700", textTransform: "uppercase", color: "#6626EF", fontSize: 12 }}>Edit</Text>
+                    <Text style={{ fontWeight: "700", textTransform: "uppercase", color: "#6626EF", fontSize: 12 }}>Start Meeting</Text>
+                  </View>
+                </View>
+              </Col>
+            ))}
+          </Row>
+
+        </Col>
+      </Row>
+    </View >
   );
 };
 

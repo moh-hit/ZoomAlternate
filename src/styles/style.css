@@ -9,141 +9,139 @@ p,
 a,
 input,
 div,
- ::placeholder {
-    font-family: 'Supreme', sans-serif !important;
+button,
+::placeholder {
+  font-family: "Supreme", sans-serif !important;
 }
 
 .MuiButton-root {
-    font-weight: 600 !important;
-    font-family: sans-serif !important;
+  font-family: sans-serif !important;
+}
+
+.row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.sidebarBtn:hover {
+  background-color: #000;
 }
 
 .sep-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin-top: 3vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3vh;
 }
 
 .seperator {
-    width: 9vw;
-    border: 0.5px solid #EBEBEB;
-    margin: 0 1em;
+  width: 9vw;
+  border: 0.5px solid #ebebeb;
+  margin: 0 1em;
 }
 
-.video-overlay {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    position: absolute;
-    bottom: 50px;
-    left: 35%;
-    width: 30%;
-    z-index: 1;
+.vertical-seperator {
+  height: 2vw;
+  width: 0rem;
+  border: 0.5px solid #eaeaea;
+  margin: 0 1em;
+}
+
+.video-overlay-header {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  padding: 3vh 5vw;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+}
+
+.video-overlay-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  z-index: 1;
+  width: 100%;
+  padding: 5vh 5vw;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+}
+
+.MuiIconButton-root {
+  margin: 0 1vw !important;
+}
+
+.MuiTabs-root{
+  margin-top: 3vh;
+}
+
+.MuiTab-root {
+  background-color: rgba(209, 126, 230, 0.1) !important;
+  font-weight: 700 !important;
+}
+@media (min-width: 600px)
+{
+.MuiTab-root {
+    min-width: 100px !important;
+    min-height: 32px !important;
+}
+}
+
+.Mui-selected {
+  background-color: rgba(209, 126, 230, 1) !important;
+  border: none !important;
+  color: #fff !important;
+}
+
+.PrivateTabIndicator-root-2 {
+  display: none !important;
 }
 
 .sPage {
-    text-align: center;
-    padding: 40px 0;
-    background: #EBF0F5;
+  text-align: center;
+  padding: 40px 0;
+  background: #ebf0f5;
 }
 
 h1 {
-    color: #88B04B;
-    font-weight: 900;
-    font-size: 40px;
-    margin-bottom: 10px;
+  color: #88b04b;
+  font-weight: 900;
+  font-size: 40px;
+  margin-bottom: 10px;
 }
 
 p {
-    color: #404F5E;
-    font-size: 20px;
-    margin: 0;
+  color: #404f5e;
+  font-size: 20px;
+  margin: 0;
 }
 
 i .checkmark {
-    color: #9ABC66;
-    font-size: 100px;
-    line-height: 200px;
-    margin-left: -15px;
+  color: #9abc66;
+  font-size: 100px;
+  line-height: 200px;
+  margin-left: -15px;
 }
 
 .card {
-    background: white;
-    padding: 60px;
-    border-radius: 4px;
-    box-shadow: 0 2px 3px #C8D0D8;
-    display: inline-block;
-    margin: 0 auto;
-}
-
-#notfound {
-    position: relative;
-    height: 100vh;
-}
-
-#notfound .notfound {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-}
-
-.notfound {
-    max-width: 520px;
-    width: 100%;
-    line-height: 1.4;
-    text-align: center;
-}
-
-.notfound .notfound-404 {
-    position: relative;
-    height: 200px;
-    margin: 0 auto 20px;
-    z-index: -1;
-}
-
-.notfound .notfound-404 h1 {
-    font-size: 236px;
-    font-weight: 200;
-    margin: 0;
-    color: #211b19;
-    text-transform: uppercase;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-}
-
-.notfound .notfound-404 h2 {
-    font-size: 28px;
-    font-weight: 400;
-    text-transform: uppercase;
-    color: #211b19;
-    background: #fff;
-    padding: 10px 5px;
-    margin: auto;
-    display: inline-block;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
-
-.notfound a {
-    display: inline-block;
-    font-weight: 700;
-    text-decoration: none;
-    color: #fff;
-    text-transform: uppercase;
-    padding: 13px 23px;
-    background: #000;
-    font-size: 18px;
-    -webkit-transition: .2s all;
-    transition: .2s all;
+  background: white;
+  padding: 60px;
+  border-radius: 4px;
+  box-shadow: 0 2px 3px #c8d0d8;
+  display: inline-block;
+  margin: 0 auto;
 }

@@ -111,78 +111,7 @@ const RenderClientHome = ({ fullHeight, fullWidth }) => {
   };
 
   return (
-    <Layout>
-      <Sider
-        style={{
-          overflow: "auto",
-          height: "100vh",
-          position: "fixed",
-          left: 0,
-          zIndex: "100",
-        }}
-        collapsible
-        collapsed={collapse}
-        onCollapse={onCollapse}
-      >
-        <Menu theme="dark" defaultSelectedKeys={["4"]} mode="inline">
-          <Menu.Item key="9" disabled={state.collapsed}>
-            {userData.displayName}
-          </Menu.Item>
-          <Menu.Item key="1" icon={<SearchOutlined />} onClick={userNavigation}>
-            Find Lawyer
-          </Menu.Item>
-
-          <Menu.Item key="2" icon={<UserOutlined />} onClick={userNavigation}>
-            Profile
-          </Menu.Item>
-          <Menu.Item
-            key="10"
-            icon={<SwitcherOutlined />}
-            onClick={userNavigation}
-          >
-            Appointments
-          </Menu.Item>
-          <Menu.Item key="3" icon={<WalletOutlined />} onClick={userNavigation}>
-            Wallet
-          </Menu.Item>
-          <Menu.Item key="5" icon={<AuditOutlined />} onClick={userNavigation}>
-            About Us
-          </Menu.Item>
-          <Menu.Item
-            key="6"
-            icon={<ContactsOutlined />}
-            onClick={userNavigation}
-          >
-            Contact Us
-          </Menu.Item>
-          <Menu.Item key="7" icon={<LogoutOutlined />} onClick={userNavigation}>
-            Sign Out
-          </Menu.Item>
-        </Menu>
-      </Sider>
-      <Layout style={{ marginLeft: "5vh" }}>
-        <Content
-          style={{
-            overflow: "initial",
-            textAlign: "center",
-            height: fullHeight * 0.91,
-          }}
-        >
-          <br />
-          {state.clientDashboard ? <RenderFindLawyer /> : null}
-          {state.clientProfile ? (
-            <RenderClientProfile state={userData} />
-          ) : null}
-          {state.walletPage ? <RenderClientWallet /> : null}
-          {state.aboutUs ? <RenderAboutUs /> : null}
-          {state.contactUs ? <RenderContactUs /> : null}
-        </Content>
-
-        <Footer style={{ textAlign: "center", background: "#FFFFFF" }}>
-          Lawmax ©2021
-        </Footer>
-      </Layout>
-    </Layout>
+    <RenderFindLawyer />
   );
 };
 

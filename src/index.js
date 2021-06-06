@@ -10,6 +10,7 @@ import globalStateReducer from "./Store/reducers/globalStateReducer";
 import globalDashboardReducer from "./Store/reducers/globalDashboardReducer";
 import globalUserDataReducer from "./Store/reducers/globalUserDataReducer";
 import 'webrtc-adapter';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const rootReducers = combineReducers({
   globalState: globalStateReducer,

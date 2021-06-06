@@ -87,11 +87,130 @@ const useGlobalStyles = () => {
     },
     loginText: {
       fontSize: 16,
-      paddingHorizontal: 40,
+      paddingLeft: 40,
       fontWeight: 700,
       color: "#fff",
       textTransform: 'uppercase'
     },
+
+
+    navbar: {
+      gridColumn: "1 / 3",
+      gridRow: "1 / 2",
+      display: "flex",
+      minHeight: "10vh",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingVertical: "2vh",
+      borderBottomWidth: 1,
+      borderBottomColor: "#EAEAEA",
+      paddingHorizontal: "3vw"
+    },
+    companyLogoNav: {
+      height: '3.5vh',
+      width: "7.5vw"
+    },
+    logoNav: {
+      fontSize: 16,
+      fontWeight: "700",
+      textAlign: "center"
+    },
+    userProfileNav: {
+      height: "5vh",
+      width: "5vh",
+      borderRadius: "100%",
+      marginLeft: "2vw"
+    },
+
+    sidebarContainer: {
+      height: "90vh",
+      paddingLeft: "2vw",
+      paddingRight: "1.5vw",
+      paddingTop: "3vh",
+      justifyContent: "space-between",
+      alignItems: "flex-start",
+      borderRightWidth: 1,
+      borderRightColor: "#EAEAEA"
+    },
+    sidebarPrimaryBut: {
+      paddingVertical: "1.5vh",
+      paddingHorizontal: "1vw",
+      marginBottom: "3vh"
+    },
+    sidebarPrimaryButText: {
+      fontSize: 16,
+      paddingLeft: "1vw",
+      fontWeight: 700,
+      color: "#fff",
+    },
+    sidebarSecBut: {
+      paddingVertical: "1.5vh",
+      paddingHorizontal: "1vw",
+      marginBottom: "1vh"
+    },
+    sidebarSecButText: {
+      fontSize: 14,
+      fontWeight: 600,
+    },
+
+    adBanner: {
+      backgroundColor: "#FFF8F1",
+      padding: "2vh",
+      justifyContent: "space-between",
+      alignItems: "flex-start",
+      minHeight: "15vh"
+    },
+    adBannerT1: {
+      fontWeight: "700"
+    },
+    adBannerT2: {
+      fontSize: 12
+    },
+    adBannerBtn: {
+      fontWeight: 700,
+      textDecorationLine: 'underline'
+    },
+
+    schldCard: {
+      minHeight: "30vh",
+      width: "18vw",
+      padding: "2vh",
+      borderWidth: 1,
+      borderColor: "#E8E8E8",
+      marginVertical: 20,
+      justifyContent: "space-between"
+    },
+    schldCardT1: {
+      textOverflow: "ellipsis",
+      overflow: "hidden",
+      whiteSpace: "nowrap",
+      fontSize: 20,
+      fontWeight: "700",
+      marginBottom: "1vh"
+    },
+    schldCardT2: {
+      fontWeight: 500
+    },
+    schldCardT3: {
+      marginTop: "2vh",
+      fontSize: 12,
+      color: "rgba(0,0,0,0.5)"
+    },
+    schldCardT4: {
+      fontSize: 12,
+      fontWeight: "500",
+      lineHeight: 24
+    },
+    schldCardActionContainer: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      borderTopWidth:1,
+      borderTopColor: "#E9E9E9",
+      paddingTop: "1vh"
+    },
+
 
 
     button: {

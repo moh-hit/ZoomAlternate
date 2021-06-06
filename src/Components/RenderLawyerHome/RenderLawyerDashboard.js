@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Image, Text, View } from "react-native";
+import { Image, Text, TouchableHighlight, View } from "react-native";
 import useGlobalStyles from "../../Hooks/useGlobalStyles";
 //import AppointmentModalButton from "../RenderClientTier/AppointmentModalButton";
 import firebase from "firebase";
@@ -7,13 +7,60 @@ import useActionDispatcher from "../../Hooks/useActionDispatcher";
 import { useSelector } from "react-redux";
 import { message, notification, Button, Avatar, Switch } from "antd";
 import { SET_KEYS_TRUE, UPDATE_USER_DATA } from "../../Store/actions";
+import { AddBox, Event, Notifications } from '@material-ui/icons';
+import { Grid, Paper, Tab, Tabs } from "@material-ui/core";
+import { Col, Container, Row } from "react-bootstrap";
 
 var docRef = null;
 const RenderLawyerDashboard = ({ fullHeight, fullWidth }) => {
+  const SIDEBAR_MENUS = {
+    NEW_MEETING: {
+      name: "New meeting",
+      primary: true,
+      key: "new_meeting"
+    },
+    SCHLD_MEETING: {
+      name: "Scheduled meetings",
+      primary: false,
+      key: "schld_meeting",
+      active: true
+    },
+    ACTIVE_USERS: {
+      name: "Active users",
+      primary: false,
+      key: "active_users"
+    },
+    CALL_RCRDINGS: {
+      name: "Call Recordings",
+      primary: false,
+      key: "call_recordings"
+    },
+    CALL_LOGS: {
+      name: "Call Logs",
+      primary: false,
+      key: "call_logs"
+    }
+
+  }
+  const SCHLDCARD_DETAILS = [
+    { title: "Weekly round-up Weekly round-up", timing: "02:30pm - 03:30pm", guest: "Mandeep Sharma" },
+    { title: "MJ Clients", timing: "02:30pm - 03:30pm", guest: "Mandeep Sharma" },
+    { title: "Visco Follow up", timing: "02:30pm - 03:30pm", guest: "Mandeep Sharma" },
+    { title: "Team Sync", timing: "02:30pm - 03:30pm", guest: "Mandeep Sharma" },
+    { title: "Design Rollout", timing: "02:30pm - 03:30pm", guest: "Mandeep Sharma" },
+  ]
+
   const picWidth = fullHeight * 0.15;
   const styles = useGlobalStyles();
+
   const [isChecked, setIsChecked] = useState(true);
   const [callRequest, setCallRequest] = useState(false);
+  const [value, setValue] = React.useState(2);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   const userData = useSelector((state) => state.globalUserData);
   const dispatchAction = useActionDispatcher();
   const onSwitchChange = (event) => {
@@ -22,6 +69,8 @@ const RenderLawyerDashboard = ({ fullHeight, fullWidth }) => {
   };
 
   useEffect(() => {
+    
+
     docRef = firebase.database().ref("/Accounts/" + userData.username + "/");
     const response = {
       id: "8G467296EP549083V",
@@ -260,39 +309,80 @@ const RenderLawyerDashboard = ({ fullHeight, fullWidth }) => {
   };
 
   return (
-    <View
-      style={{
-        maxWidth: "100%",
-        height: "100%",
-        margin: "auto",
-        top: "10%",
-      }}
-    >
-      <Image
-        style={{
-          width: "18vh",
-          height: "20%",
-          marginHorizontal: "auto",
-          borderRadius: "50%",
-        }}
-        source={{ uri: userData.profilePic }}
-      />
-      <Text style={styles.title}>{userData.displayName}</Text>
+    <View style={{ flex: 1 }}>
+      <View style={styles.navbar}>
+        <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+          <Image source={{ uri: "https://www.backbase.com/wp-content/uploads/2020/05/Microsoft-Logo-PNG-Transparent.png" }} style={styles.companyLogoNav} />
+          <div className="vertical-seperator"></div>
+          <Text style={styles.logoNav}>InConnect</Text>
+        </View>
+        <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+          <Notifications style={{ color: "rgba(0,0,0,0.5)", fontSize: 28 }} />
+          <Image source={{ uri: "https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/batman_hero_avatar_comics-512.png" }} style={styles.userProfileNav} />
+        </View>
+      </View>
+      <Row>
+        <Col xs={2}>
+          <View style={styles.sidebarContainer}>
+            <View style={{ alignItems: "flex-start" }}>
+              {Object.values(SIDEBAR_MENUS).map((menu, index) => (
+                <TouchableHighlight style={[menu.primary ? styles.sidebarPrimaryBut : styles.sidebarSecBut, { backgroundColor: menu.active ? "#F5F5F5" : menu.primary ? "#6626EF" : "#fff" }]}>
+                  <View style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center"
+                  }}>
+                    {menu.primary && <AddBox style={{ color: "#fff", fontSize: 20 }} />}
+                    <Text style={menu.primary ? styles.sidebarPrimaryButText : styles.sidebarSecButText}>{menu.name}</Text>
+                  </View>
+                </TouchableHighlight>
+              ))}
+            </View>
+            <View style={{ marginBottom: "3vh" }}>
+              <View style={styles.adBanner}>
+                <View style={{ alignItems: "flex-start" }}>
+                  <Text style={styles.adBannerT1}>50% off on 10 users</Text>
+                  <Text style={styles.adBannerT2}>Lorem ipsum dolor sit amet lorem.</Text>
+                </View>
+                <Text style={styles.adBannerBtn}>Know More</Text>
+              </View>
+            </View>
+          </View>
+        </Col>
+        <Col xs={10}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="disabled tabs example"
+          >
+            <Tab label="Today" />
+            <Tab label="Tomorrow" />
+            <Tab label="This Week" />
 
-      <Switch
-        style={{ width: "25%", marginLeft: "38%" }}
-        onChange={availabilityToggle}
-        unCheckedChildren="Offline"
-        checkedChildren="Online"
-        checked={userData.isOnline}
-      />
-      <Text style={styles.text}>
-        Lawmax <b>{userData.lawyerTier}</b>
-      </Text>
-      <Text style={styles.text}>
-        {userData.firm} {userData.city}
-      </Text>
-    </View>
+          </Tabs>
+          <Row xs={1} md={4}>
+            {SCHLDCARD_DETAILS.map((detail, index) => (
+              <Col style={{ paddingLeft: 0, paddingRight: 0 }}>
+                <View style={styles.schldCard}>
+                  <View>
+                    <Text style={styles.schldCardT1}>{detail.title}</Text>
+                    <Text style={styles.schldCardT2}>{detail.timing}</Text>
+                    <Text style={styles.schldCardT3}>Invited Guest</Text>
+                    <Text style={styles.schldCardT4}>{detail.guest}</Text>
+                  </View>
+                  <View style={styles.schldCardActionContainer}>
+                    <Text style={{ fontWeight: "700", textTransform: "uppercase", color: "#6626EF", fontSize: 12 }}>Edit</Text>
+                    <Text style={{ fontWeight: "700", textTransform: "uppercase", color: "#6626EF", fontSize: 12 }}>Start Meeting</Text>
+                  </View>
+                </View>
+              </Col>
+            ))}
+          </Row>
+
+        </Col>
+      </Row>
+    </View >
+
   );
 };
 
